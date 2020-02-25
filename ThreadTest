@@ -1,0 +1,48 @@
+package swing;
+
+public class ThreadTest {
+
+    public static void main(String[] args){
+
+        Thread a;
+
+        a = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("1"+Thread.currentThread().isInterrupted());
+
+                    Thread.sleep(5000);
+                    System.out.println("2"+Thread.currentThread().isInterrupted());
+
+                } catch (InterruptedException e) {
+                    System.out.println("3"+Thread.currentThread().isInterrupted());
+                    Thread.currentThread().interrupt();
+                    System.out.println("3.5"+Thread.currentThread().isInterrupted());
+
+                    e.printStackTrace();
+                    return;
+                }
+
+                System.out.println("4"+Thread.currentThread().isInterrupted());
+            }
+        });
+        a.start();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        a.interrupt();
+        System.out.println("5"+a.isInterrupted());
+
+        try {
+            Thread.sleep(6000);
+            System.out.println("6"+a.isInterrupted());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
